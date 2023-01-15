@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Testimonial</title>
+    <title>Feedback</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
@@ -17,138 +17,121 @@
     body {
       font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      overflow: hidden;
-      margin: 0;
-      background-color: #f4f4f4;
-      padding: 10px;
-    }
-    .container {
-      background-color: #476ce4;
-      color: #fff;
-      border-radius: 15px;
-      margin: 20px auto;
-      padding: 50px 80px;
-      max-width: 768px;
-      position: relative;
-    }
-    .fa-quote {
-      color: rgba(255, 255, 255, 0.3);
-      font-size: 28px;
-      position: absolute;
-      top: 70px;
-    }
-    .fa-quote-right {
-      left: 40px;
-    }
-    .fa-quote-left {
-      right: 40px;
-    }
-    p {
-      line-height: 28px;
-      text-align: justify;
-    }
-    .user {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .user-img {
-      border-radius: 50%;
-      height: 75px;
-      width: 75px;
-      object-fit: cover;
-    }
-    .user .user-details {
-      margin-left: 10px;
-    }
-    .user .user-name {
+      background-color:#c2c2c2;
       margin: 0;
     }
-    .progress-bar {
-      background-color: #fff;
-      height: 4px;
-      width: 100%;
-      animation: grow 10s linear infinite;
-      transform-origin: left;
+    .panel-container{
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        border-radius: 4px;
+        font-size: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        max-width: 400px;
+        text-align: center;
     }
-    @keyframes grow {
-      0% {
-        transform: scaleX(0);
-      }
+    .panel-container strong{
+        line-height: 20px;
     }
-    @media (max-width: 768px) {
-      .fa-quote {
-        display: none;
-      }
-      .container {
-        padding: 20px 30px;
-      }
+    .rating-container{
+        display: flex;
+        margin: 20px 0;
     }
+    .rating{
+        flex: 1;
+        cursor: pointer;
+        padding:20px;
+        margin: 10px 5px;
+    }
+    .rating:hover, .rating.active{
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .rating img{
+        width: 40px;
+    }
+    .rating small{
+        color: #555;
+        display: inline-block;
+    margin: 10px 0 0;
+    }
+    .rating:hover small, .rating.active small{
+        color: #111;
+    }
+    .btn{
+        background-color: #303d2b;
+        color: #fff;
+        border: 0;
+        border-radius: 4px;
+        padding: 12px 30px;
+        cursor: pointer;
+    }
+    .btn:focus{
+        outline: 0;
+    }
+    .btn:active{
+        transform: scale(0.98);
+    }
+    .fa-heart {
+        color: red;
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
   </style>
   <body>
-    <div class="container">
-      <div class="progress-bar"></div>
-      <div class="fas fa-quote-right fa-quote"></div>
-      <div class="fas fa-quote-left fa-quote"></div>
-      <p class="content">
-        First steps in the MongoDB World? This cheat sheet is filled with some
-        handy tips, commands, and quick references to get you connected and
-        CRUD'ing in no time!
-      </p>
-      <div class="user">
-        <img
-          s{
-          rc="https://randomuser.me/api/portraits/women/46.jpg"
-          alt=""
-          class="user-img"
-        />
-        <div class="user-details">
-          <h4 class="user-name">Akash deshmukh</h4>
+   <div id="panel" class="panel-container">
+     <strong>Give you feedback</strong>
+     <div class="rating-container">
+        <div class="rating">
+            <img src="https://img.icons8.com/emoji/96/null/unamused-face.png"/>
+            <small>Unhappy</small>
         </div>
-      </div>
+        <div class="rating">
+            <img src="https://img.icons8.com/emoji/96/null/neutral-face.png"/>
+            <small>Neutral</small>
+        </div>
+        <div class="rating active">
+            <img src="https://img.icons8.com/emoji/96/null/relieved-face.png"/>
+            <small>Satisfied</small>
+        </div>
+     </div>
+     <div class="btn" id="send">Send Review</div>
+   </div>
     </div>
   </body>
   <script>
-     const container = document.querySelector(".container")
-     const content = document.querySelector(".content")
-     const userImg = document.querySelector(".user-img")
-     const userName = document.querySelector(".user-name")
+    const ratings = document.querySelectorAll(".rating")
+    const sendBtn = document.querySelector("#send")
+    const panel = document.querySelector("#panel")
+    let rating = "Satisfied"
+    panel.addEventListener('click', (e)=>{
+        if(e.target.parentNode.classList.contains('rating')){
+            removeActive()
+            e.target.parentNode.classList.add("active")
+            rating = e.target.nextElementSibling.innerHTML
+        }
+    })
+    function removeActive(){
+        for(let i = 0;i < ratings.length; i++){
+            ratings[i].classList.remove('active')
+        }
+    }
+    sendBtn.addEventListener("click", (e)=>{
+        panel.innerHTML = `
+            <i class="fas fa-heart"></i>
+            <strong>Thank You</strong>
+            <br>
+            <strong> Feedback: ${rating}</strong>
+            <p>We'll use your feedback to improve our customer support </p>
+        `
+    })
 
-     const contentArr = [{
-      name: "Akash",
-      photo: "https://randomuser.me/api/portraits/women/47.jpg",
-      text: "First steps in the MongoDB World? This cheat sheet is filled with som!"
-     },
-     {
-      name:"akash",
-      photo: "https://randomuser.me/api/portraits/women/47.jpg",
-      text: "First steps in the MongoDB World? This cheat sheet is filled with som!"
-      
-     },
-     {
-      name: "akash3",
-      photo: "https://randomuser.me/api/portraits/women/47.jpg",
-      text: "First steps in the MongoDB World? This cheat sheet is filled with som!"
-      
-     }]
-     let idx = 1;
-     function updateDate(){
-      const {name,photo,text} = contentArr[idx]
-      
-      content.innerHTML = text;
-      userImg.src = photo
-      userName.innerHTML = name
-      idx++
-      if(idx > contentArr.length-1){
-        idx = 0;
-      }
-     }
-     setInterval(()=>{
-      updateDate()
-     },10000)
   </script>
 </html>
